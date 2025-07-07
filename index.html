@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page com Carrossel e Áudio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,20 +12,119 @@
             box-sizing: border-box;
         }
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #000000, #800080);
+            font-family: 'Great Vibes', cursive; /* Fonte romântica */
+            background: linear-gradient(135deg, #000000, rgb(5, 5, 88));
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            font-size: 1.4rem; /* Tamanho base para legibilidade */
+            line-height: 1.5; /* Espaçamento para fonte cursiva */
+        }
+        .cover-left, .cover-right {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            width: 50%; /* Cobertura total */
+            z-index: 1000; /* Acima de todo o conteúdo */
+            transition: transform 1s ease-in-out; /* Animação suave */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cover-left {
+            left: 0;
+            background: linear-gradient(200deg, #000000, rgb(1, 1, 42), rgb(5, 5, 88), rgb(5, 5, 88), rgb(5, 5, 88), gold);
+            box-shadow: 0px 0px 10px 1px gold;
+        }
+        .cover-right {
+            right: 0;
+            background: linear-gradient(160deg, #000000, rgb(1, 1, 42), rgb(5, 5, 88), rgb(5, 5, 88), rgb(5, 5, 88), gold);
+            box-shadow: 0px 0px 10px 1px gold;
+            display: grid;
+            flex-direction: column;
+            justify-content: center;
+            align-items: end;
+        }
+        .cover-right img {
+            max-height: 150px; /* Altura da imagem */
+            width: auto;
+            object-fit: contain;
+        }
+        .cover-left.open {
+            transform: translateX(-100%); /* Desliza para a esquerda */
+            box-shadow: 0px 0px 0px 0px rgb(255, 255, 255);
+        }
+        .cover-right.open {
+            transform: translateX(100%); /* Desliza para a direita */
+            box-shadow: 0px 0px 0px 0px rgb(255, 255, 255);
+        }
+        .toggle-button {
+            position: fixed;
+            top: 50%; /* Centraliza verticalmente */
+            left: 50%; /* Centraliza horizontalmente */
+            transform: translate(-50%, -50%); /* Corrige o centro */
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(180deg, #000000, rgb(46, 46, 220), gold);
+            box-shadow: 0px 0px 10px 1px gold;
+            border-radius: 50%; /* Circular */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1rem; /* Ajustado para legibilidade */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            z-index: 1001; /* Acima das capas */
+            transition: all 1s ease-in-out; /* Animação para posição */
+        }
+        .toggle-button.bottom-right {
+            top: auto;
+            left: auto;
+            bottom: 20px;
+            right: 20px;
+            transform: none; /* Remove o transform para posição fixa */
+            transition: all 1s ease-in-out; /* Animação para posição */
+        }
+        .toggle-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Exibe a imagem inteira */
+            position: absolute; /* Garante que a imagem fique acima do fundo */
+        }
+        .container1 {
+            display: grid;
+            grid-template-columns: 1fr; /* Uma coluna centralizada */
+            justify-content: center; /* Centraliza os filhos horizontalmente */
+            width: 80%; /* 80% da largura do body */
+            min-height: auto; /* Ajusta a altura ao conteúdo */
+            background: linear-gradient(150deg, #000000, #000000, #a500a5, rgb(5, 5, 88), #000000);
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgb(64, 0, 71);
+            margin: 0 auto; /* Centraliza o container1 no body */
+            margin-top: 5%;
+        }
+        .container2 {
+            display: flex;
+            flex-direction: row; /* Sempre horizontal */
+            justify-content: space-around; /* Espaço entre counter e imagem */
+            align-items: center; /* Alinha verticalmente ao centro */
+            width: 80%; /* 80% da largura do body */
+            min-height: auto; /* Ajusta a altura ao conteúdo */
+            background: linear-gradient(150deg, #000000, #000000, rgb(5, 5, 88), gold);
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgb(64, 0, 71);
+            margin: 20px auto; /* Centraliza horizontalmente */
+            padding: 20px; /* Espaçamento interno */
         }
         .carousel {
-            width: 100%;
+            width: 90%; /* 90% da largura do container1 */
             max-width: 800px;
             height: 400px;
             overflow: hidden;
             position: relative;
-            margin: 20px 10px; /* Margens simétricas */
+            margin: 20px auto; /* Centraliza horizontalmente */
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -39,6 +139,8 @@
             width: 12.5%; /* 100% ÷ 8 imagens */
             height: 100%;
             position: relative; /* Necessário para o ::before */
+            display: flex; /* Centraliza a imagem */
+            justify-content: center; /* Centraliza a imagem horizontalmente */
         }
         .carousel-item::before {
             content: '';
@@ -53,30 +155,14 @@
             z-index: -1; /* Fundo atrás do <img> */
         }
         /* Classes específicas para cada imagem de fundo */
-        .carousel-item-1::before {
-            background-image: url('static/image1.jpeg');
-        }
-        .carousel-item-2::before {
-            background-image: url('static/image2.jpeg');
-        }
-        .carousel-item-3::before {
-            background-image: url('static/image3.jpeg');
-        }
-        .carousel-item-4::before {
-            background-image: url('static/image4.jpeg');
-        }
-        .carousel-item-5::before {
-            background-image: url('static/image5.jpeg');
-        }
-        .carousel-item-6::before {
-            background-image: url('static/image6.jpeg');
-        }
-        .carousel-item-7::before {
-            background-image: url('static/image7.jpeg');
-        }
-        .carousel-item-8::before {
-            background-image: url('static/image8.jpeg');
-        }
+        .carousel-item-1::before { background-image: url('static/image1.jpeg'); }
+        .carousel-item-2::before { background-image: url('static/image2.jpeg'); }
+        .carousel-item-3::before { background-image: url('static/image3.jpeg'); }
+        .carousel-item-4::before { background-image: url('static/image4.jpeg'); }
+        .carousel-item-5::before { background-image: url('static/image5.jpeg'); }
+        .carousel-item-6::before { background-image: url('static/image6.jpeg'); }
+        .carousel-item-7::before { background-image: url('static/image7.jpeg'); }
+        .carousel-item-8::before { background-image: url('static/image8.jpeg'); }
         .carousel-item img {
             width: 100%;
             height: 100%;
@@ -95,160 +181,380 @@
             100% { transform: translateX(0); } /* Volta à Imagem 1 */
         }
         .audio-player {
-            margin: 20px 10px; /* Margens simétricas */
-            width: 100%;
-            max-width: 800px;
+            width: 90%; /* 90% da largura do container1 */
+            margin-top: -2px;
             text-align: center;
             background: transparent;
+            margin: 20px auto; /* Centraliza horizontalmente */
         }
         audio {
             width: 100%;
             max-width: 400px;
-            background: linear-gradient(135deg, #ff69b4, #000000);
+            color: white;
+            background: transparent;
             border: none !important;
             outline: none !important;
             border-radius: 5px;
         }
         audio::-webkit-media-controls-panel {
-            background: linear-gradient(135deg, #ff69b4, #000000);
+            background: transparent;
+            color: white;
             border: none !important;
             outline: none !important;
             border-radius: 5px;
         }
         audio::-webkit-media-controls-enclosure {
-            background: linear-gradient(135deg, #ff69b4, #000000);
+            background: transparent;
+            color: white;
             border: none !important;
             outline: none !important;
             border-radius: 5px;
         }
+        audio::-webkit-media-controls-play-button,
+        audio::-webkit-media-controls-mute-button,
+        audio::-webkit-media-controls-volume-slider,
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display,
+        audio::-webkit-media-controls-timeline {
+            filter: brightness(1000%); /* Força os botões e controles a branco */
+            color: white !important; /* Reforça a cor branca para textos e elementos */
+        }
         audio::-webkit-media-controls {
             border: none !important;
+            color: white;
             outline: none !important;
         }
         audio::-moz-media-controls-panel {
-            background: linear-gradient(135deg, #ff69b4, #000000);
+            background: transparent;
+            color: white;
             border: none !important;
             outline: none !important;
         }
+        .counter {
+            display: flex;
+            flex-direction: column; /* Métricas em coluna vertical */
+            justify-content: center; /* Centraliza verticalmente */
+            width: 50%; /* Ocupa metade do container2 */
+            min-width: 200px; /* Evita compressão excessiva */
+            text-align: left;
+            color: white;
+            font-size: 1.4rem; /* Ajustado para legibilidade com fonte cursiva */
+            padding: 10px;
+            border-radius: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra estática preta */
+            gap: 10px; /* Espaçamento entre spans */
+        }
+        .counter span {
+            font-size: 1.4rem; /* Mesmo tamanho do .counter */
+            text-shadow: -2px 0px 5px gold; /* Sombra dourada */
+        }
+        .counter-image img {
+            max-height: 200px; /* Altura máxima da imagem */
+            width: auto; /* Mantém proporção */
+            object-fit: contain; /* Evita distorção */
+            margin-left: auto; /* Alinha à direita */
+        }
         .typewriter {
-            margin: 20px auto 0; /* Espaçamento acima do texto */
-            max-width: calc(100% - 20px); /* Respeita margens laterais */
+            width: 80%; /* Largura fixa de 80% */
+            margin: 20px auto; /* Centraliza horizontalmente e verticalmente */
             text-align: center;
             display: block;
-
         }
         .typewriter-line {
-            font-size: 1.2rem;
+            font-size: 1.4rem; /* Ajustado para legibilidade com fonte cursiva */
             color: #ffffff;
-            overflow: hidden;
-            white-space: nowrap;
             display: block; /* Cada linha em uma nova linha */
             opacity: 0; /* Invisível até a animação começar */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra estática preta */
+            line-height: 1.6; /* Melhora espaçamento para fonte cursiva */
         }
-        .typewriter-line:nth-child(1) {
-            animation:
-                show 0.1s forwards,
-                typewriter 5s steps(74, end) forwards,
-                blink 0.75s 6 forwards,
-                gold 5s forwards;
+        .typewriter-line .word {
+            display: inline-block; /* Cada palavra como bloco inline */
+            opacity: 0; /* Invisível até a animação */
+            animation: fadeInWord 0.3s forwards; /* Animação de fade-in por palavra */
         }
-        .typewriter-line:nth-child(2) {
-            animation:
-                show 0.1s 5s forwards,
-                typewriter 5s steps(67, end) 5s forwards,
-                blink 0.75s 6 5s forwards,
-                gold 5s 5s forwards;
+        .typewriter-image {
+            width: 80%; /* Mesma largura do .typewriter */
+            margin: 20px auto; /* Centraliza horizontalmente */
+            display: flex;
+            justify-content: flex-start; /* Alinha a imagem à esquerda */
         }
-        .typewriter-line:nth-child(3) {
-            animation:
-                show 0.1s 10s forwards,
-                typewriter 5s steps(71, end) 10s forwards,
-                blink 0.75s 6 10s forwards,
-                gold 5s 10s forwards;
+        .typewriter-image img {
+            max-height: 200px; /* Mesma altura do .counter-image */
+            width: auto; /* Mantém proporção */
+            object-fit: contain; /* Evita distorção */
         }
-        .typewriter-line:nth-child(4) {
-            animation:
-                show 0.1s 15s forwards,
-                typewriter 5s steps(12, end) 15s forwards,
-                blink 0.75s 6 15s forwards,
-                gold 5s 15s forwards;
+        /* Animação para fade-in de cada palavra */
+        @keyframes fadeInWord {
+            to { opacity: 1; }
         }
+        /* Atrasos para cada palavra na primeira linha (14 palavras) */
+        .typewriter-line:nth-child(1) { animation: show 0.1s forwards; }
+        .typewriter-line:nth-child(1) .word:nth-child(1) { animation-delay: 0s; }
+        .typewriter-line:nth-child(1) .word:nth-child(2) { animation-delay: 0.3s; }
+        .typewriter-line:nth-child(1) .word:nth-child(3) { animation-delay: 0.6s; }
+        .typewriter-line:nth-child(1) .word:nth-child(4) { animation-delay: 0.9s; }
+        .typewriter-line:nth-child(1) .word:nth-child(5) { animation-delay: 1.2s; }
+        .typewriter-line:nth-child(1) .word:nth-child(6) { animation-delay: 1.5s; }
+        .typewriter-line:nth-child(1) .word:nth-child(7) { animation-delay: 1.8s; }
+        .typewriter-line:nth-child(1) .word:nth-child(8) { animation-delay: 2.1s; }
+        .typewriter-line:nth-child(1) .word:nth-child(9) { animation-delay: 2.4s; }
+        .typewriter-line:nth-child(1) .word:nth-child(10) { animation-delay: 2.7s; }
+        .typewriter-line:nth-child(1) .word:nth-child(11) { animation-delay: 3.0s; }
+        .typewriter-line:nth-child(1) .word:nth-child(12) { animation-delay: 3.3s; }
+        .typewriter-line:nth-child(1) .word:nth-child(13) { animation-delay: 3.6s; }
+        .typewriter-line:nth-child(1) .word:nth-child(14) { animation-delay: 3.9s; }
+        /* Atrasos para cada palavra na segunda linha (13 palavras, inicia após 4.2s) */
+        .typewriter-line:nth-child(2) { animation: show 0.1s 4.2s forwards; }
+        .typewriter-line:nth-child(2) .word:nth-child(1) { animation-delay: 4.2s; }
+        .typewriter-line:nth-child(2) .word:nth-child(2) { animation-delay: 4.5s; }
+        .typewriter-line:nth-child(2) .word:nth-child(3) { animation-delay: 4.8s; }
+        .typewriter-line:nth-child(2) .word:nth-child(4) { animation-delay: 5.1s; }
+        .typewriter-line:nth-child(2) .word:nth-child(5) { animation-delay: 5.4s; }
+        .typewriter-line:nth-child(2) .word:nth-child(6) { animation-delay: 5.7s; }
+        .typewriter-line:nth-child(2) .word:nth-child(7) { animation-delay: 6.0s; }
+        .typewriter-line:nth-child(2) .word:nth-child(8) { animation-delay: 6.3s; }
+        .typewriter-line:nth-child(2) .word:nth-child(9) { animation-delay: 6.6s; }
+        .typewriter-line:nth-child(2) .word:nth-child(10) { animation-delay: 6.9s; }
+        .typewriter-line:nth-child(2) .word:nth-child(11) { animation-delay: 7.2s; }
+        .typewriter-line:nth-child(2) .word:nth-child(12) { animation-delay: 7.5s; }
+        .typewriter-line:nth-child(2) .word:nth-child(13) { animation-delay: 7.8s; }
+        /* Atrasos para cada palavra na terceira linha (9 palavras, inicia após 8.1s) */
+        .typewriter-line:nth-child(3) { animation: show 0.1s 8.1s forwards; }
+        .typewriter-line:nth-child(3) .word:nth-child(1) { animation-delay: 8.1s; }
+        .typewriter-line:nth-child(3) .word:nth-child(2) { animation-delay: 8.4s; }
+        .typewriter-line:nth-child(3) .word:nth-child(3) { animation-delay: 8.7s; }
+        .typewriter-line:nth-child(3) .word:nth-child(4) { animation-delay: 9.0s; }
+        .typewriter-line:nth-child(3) .word:nth-child(5) { animation-delay: 9.3s; }
+        .typewriter-line:nth-child(3) .word:nth-child(6) { animation-delay: 9.6s; }
+        .typewriter-line:nth-child(3) .word:nth-child(7) { animation-delay: 9.9s; }
+        .typewriter-line:nth-child(3) .word:nth-child(8) { animation-delay: 10.2s; }
+        .typewriter-line:nth-child(3) .word:nth-child(9) { animation-delay: 10.5s; }
         /* Animação para tornar a linha visível */
         @keyframes show {
             to { opacity: 1; }
         }
-        /* Animação de escrita */
-        @keyframes typewriter {
-            from { width: 0; border-right: 2px solid #ffffff; }
-            to { width: 100%; border-right: none; }
-        }
-        /* Animação do cursor piscante */
-        @keyframes blink {
-            50% { border-right-color: transparent; }
-        }
         /* Animação para efeito dourado com sombra dourada */
         @keyframes gold {
             0% { color: #FFD700; text-shadow: 2px 2px 4px #FFD700; } /* Dourado com sombra dourada */
-            100% { color: #ffffff; text-shadow:  0px 0px 4px white; } /* Branco sem sombra (usa a sombra estática) */
+            100% { color: #ffffff; text-shadow: 0px 0px 4px white; } /* Branco com sombra branca */
         }
+        /* Aplica animação gold à linha inteira */
+        .typewriter-line:nth-child(1) { animation: show 0.1s forwards, gold 4.2s forwards; }
+        .typewriter-line:nth-child(2) { animation: show 0.1s 4.2s forwards, gold 3.9s 4.2s forwards; }
+        .typewriter-line:nth-child(3) { animation: show 0.1s 8.1s forwards, gold 2.7s 8.1s forwards; }
         @media (max-width: 600px) {
             .carousel {
                 height: 200px;
-                margin: 20px 10px; /* Margens simétricas em celulares */
+                margin: 20px auto; /* Mantém centralização em celulares */
             }
             .audio-player {
-                margin: 20px 10px; /* Margens simétricas em celulares */
+                margin: 20px auto; /* Mantém centralização em celulares */
                 padding: 0;
             }
             audio {
                 max-width: calc(100% - 20px); /* Respeita margens laterais */
             }
+            .counter {
+                font-size: 1.2rem; /* Ajustado para legibilidade em telas menores */
+                min-width: 150px; /* Evita compressão excessiva */
+            }
+            .counter span {
+                font-size: 1.2rem; /* Mesmo tamanho do .counter */
+            }
+            .counter-image img {
+                max-height: 150px; /* Altura reduzida em telas pequenas */
+                width: auto;
+            }
+            .container2 {
+                padding: 10px; /* Menor padding em telas pequenas */
+            }
             .typewriter-line {
-                font-size: 1rem; /* Menor em celulares */
+                font-size: 1.2rem; /* Ajustado para legibilidade em telas menores */
+                white-space: normal; /* Permite quebra de linha em telas menores */
+            }
+            .typewriter-image img {
+                max-height: 150px; /* Altura reduzida em telas pequenas */
+                width: auto;
+            }
+            .toggle-button {
+                width: 50px;
+                height: 50px;
+                font-size: 0.8rem; /* Menor em telas pequenas */
+            }
+            .toggle-button.bottom-right {
+                bottom: 10px; /* Menor margem em telas pequenas */
+                right: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item carousel-item-1">
-                <img src="static/image1.jpeg" alt="Imagem 1">
-            </div>
-            <div class="carousel-item carousel-item-2">
-                <img src="static/image2.jpeg" alt="Imagem 2">
-            </div>
-            <div class="carousel-item carousel-item-3">
-                <img src="static/image3.jpeg" alt="Imagem 3">
-            </div>
-            <div class="carousel-item carousel-item-4">
-                <img src="static/image4.jpeg" alt="Imagem 4">
-            </div>
-            <div class="carousel-item carousel-item-5">
-                <img src="static/image5.jpeg" alt="Imagem 5">
-            </div>
-            <div class="carousel-item carousel-item-6">
-                <img src="static/image6.jpeg" alt="Imagem 6">
-            </div>
-            <div class="carousel-item carousel-item-7">
-                <img src="static/image7.jpeg" alt="Imagem 7">
-            </div>
-            <div class="carousel-item carousel-item-8">
-                <img src="static/image8.jpeg" alt="Imagem 8">
-            </div>
-        </div>
-    </div>
-    <div class="audio-player">
-        <audio controls>
-            <source src="static/TimMaiaEuAmoVoce.mp3" type="audio/mp3">
-            Seu navegador não suporta o elemento de áudio.
-        </audio>
+    <div class="cover-left">
         <div class="typewriter">
-            <span class="typewriter-line">Sei que o nosso amor não cabe em um IP, mas prometo confessá-lo para sempre</span>
-            <span class="typewriter-line">Não te ofereço nada menos que tudo, e te peço apenas um amor eterno</span>
-            <span class="typewriter-line">Que o meu afeto nunca te baste, eu te amo...</span>
+            <span class="typewriter-line">
+                <span class="word">Sei</span> <span class="word">que</span> <span class="word">o</span> <span class="word">nosso</span> <span class="word">amor</span> <span class="word">não</span> <span class="word">cabe</span> <span class="word">em</span> <span class="word">um</span> <span class="word">IP,</span> <span class="word">mas</span> <span class="word">prometo</span> <span class="word">confessá-lo</span> <span class="word">para</span> <span class="word">sempre</span>
+            </span>
+            <span class="typewriter-line">
+                <span class="word">Não</span> <span class="word">te</span> <span class="word">ofereço</span> <span class="word">nada</span> <span class="word">menos</span> <span class="word">que</span> <span class="word">tudo,</span> <span class="word">e</span> <span class="word">te</span> <span class="word">peço</span> <span class="word">apenas</span> <span class="word">um</span> <span class="word">amor</span> <span class="word">eterno</span>
+            </span>
+            <span class="typewriter-line">
+                <span class="word">Que</span> <span class="word">o</span> <span class="word">meu</span> <span class="word">afeto</span> <span class="word">nunca</span> <span class="word">te</span> <span class="word">baste,</span> <span class="word">eu</span> <span class="word">te</span> <span class="word">amo...</span>
+            </span>
         </div>
     </div>
+    <div class="cover-right">
+        <img src="static/xicara bela fera.png" alt="Imagem xícara bela e a fera">
+    </div>
+    <div class="toggle-button" onclick="toggleCovers()">
+        <img src="static/rosa bela fera.png" alt="Imagem rosa bela e a fera">
+    </div>
+    <div class="container1">
+        <div class="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item carousel-item-1">
+                    <img src="static/image1.jpeg" alt="Imagem 1">
+                </div>
+                <div class="carousel-item carousel-item-2">
+                    <img src="static/image2.jpeg" alt="Imagem 2">
+                </div>
+                <div class="carousel-item carousel-item-3">
+                    <img src="static/image3.jpeg" alt="Imagem 3">
+                </div>
+                <div class="carousel-item carousel-item-4">
+                    <img src="static/image4.jpeg" alt="Imagem 4">
+                </div>
+                <div class="carousel-item carousel-item-5">
+                    <img src="static/image5.jpeg" alt="Imagem 5">
+                </div>
+                <div class="carousel-item carousel-item-6">
+                    <img src="static/image6.jpeg" alt="Imagem 6">
+                </div>
+                <div class="carousel-item carousel-item-7">
+                    <img src="static/image7.jpeg" alt="Imagem 7">
+                </div>
+                <div class="carousel-item carousel-item-8">
+                    <img src="static/image8.jpeg" alt="Imagem 8">
+                </div>
+            </div>
+        </div>
+        <div class="audio-player">
+            <audio controls>
+                <source src="static/TimMaiaEuAmoVoce.mp3" type="audio/mp3">
+                Seu navegador não suporta o elemento de áudio.
+            </audio>
+        </div>
+    </div>
+    <div class="container2">
+        <div class="counter">
+            <span id="">Nosso tempo juntos!!</span>
+            <span id="ano">Anos: 0</span>
+            <span id="mes">Meses: 00</span>
+            <span id="dia">Dias: 000</span>
+            <span id="hora">Horas: 00:00:00</span>
+            <span id="validade">Validade: ∞</span>
+        </div>
+        <div class="counter-image">
+            <img src="static/relogio bela fera.png" alt="Imagem relogio bela e a fera">
+        </div>
+    </div>
+    <script>
+        // Função para alternar as capas e mover o botão
+        function toggleCovers() {
+            const coverLeft = document.querySelector('.cover-left');
+            const coverRight = document.querySelector('.cover-right');
+            const button = document.querySelector('.toggle-button');
+            coverLeft.classList.toggle('open');
+            coverRight.classList.toggle('open');
+            button.classList.toggle('bottom-right');
+        }
+
+        // Data inicial: 15/09/2023 00:00:00 -03:00
+        const startDate = new Date('2023-09-15T00:00:00-03:00');
+
+        // Função para calcular o tempo decorrido
+        function calculateElapsedTime() {
+            const now = new Date(); // Data atual
+            const diffMs = now - startDate; // Diferença em milissegundos
+            const totalSeconds = Math.floor(diffMs / 1000); // Converter para segundos
+
+            let seconds = totalSeconds % 60;
+            let totalMinutes = Math.floor(totalSeconds / 60);
+            let minutes = totalMinutes % 60;
+            let totalHours = Math.floor(totalMinutes / 60);
+            let hours = totalHours % 24;
+            let totalDays = Math.floor(totalHours / 24);
+            let days = totalDays % 30;
+            let totalMonths = Math.floor(totalDays / 30);
+            let months = totalMonths % 12;
+            let years = Math.floor(totalMonths / 12);
+
+            return { years, months, days, hours, minutes, seconds };
+        }
+
+        // Inicializa o contador com o tempo decorrido
+        let { years, months, days, hours, minutes, seconds } = calculateElapsedTime();
+
+        // Funções para formatar o tempo
+        function formatAno() {
+            const formattedYears = years.toString().padStart(4, '0');
+            return `Anos: ${formattedYears}`;
+        }
+
+        function formatMes() {
+            const formattedMonths = months.toString().padStart(2, '0');
+            return `Meses: ${formattedMonths}`;
+        }
+
+        function formatDia() {
+            const formattedDays = days.toString().padStart(3, '0');
+            return `Dias: ${formattedDays}`;
+        }
+
+        function formatHora() {
+            const formattedHours = hours.toString().padStart(2, '0');
+            const formattedMinutes = minutes.toString().padStart(2, '0');
+            const formattedSeconds = seconds.toString().padStart(2, '0');
+            return `Horas: ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+        }
+
+        // Função para atualizar o contador
+        function updateCounter() {
+            seconds++;
+            if (seconds >= 60) {
+                seconds = 0;
+                minutes++;
+            }
+            if (minutes >= 60) {
+                minutes = 0;
+                hours++;
+            }
+            if (hours >= 24) {
+                hours = 0;
+                days++;
+            }
+            if (days >= 30) {
+                days = 0;
+                months++;
+            }
+            if (months >= 12) {
+                months = 0;
+                years++;
+            }
+            document.getElementById('ano').textContent = formatAno();
+            document.getElementById('mes').textContent = formatMes();
+            document.getElementById('dia').textContent = formatDia();
+            document.getElementById('hora').textContent = formatHora();
+        }
+
+        // Atualiza o contador a cada segundo
+        setInterval(updateCounter, 1000);
+
+        // Define o valor inicial
+        document.getElementById('ano').textContent = formatAno();
+        document.getElementById('mes').textContent = formatMes();
+        document.getElementById('dia').textContent = formatDia();
+        document.getElementById('hora').textContent = formatHora();
+    </script>
 </body>
 </html>
