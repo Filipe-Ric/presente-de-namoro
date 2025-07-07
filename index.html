@@ -44,10 +44,10 @@
             display: grid;
             flex-direction: column;
             justify-content: center;
-            align-items: end;
+            align-items: center;
         }
         .cover-right img {
-            max-height: 150px; /* Altura da imagem */
+            max-height: 100px; /* Altura da imagem */
             width: auto;
             object-fit: contain;
         }
@@ -130,13 +130,13 @@
         }
         .carousel-inner {
             display: flex;
-            width: 800%; /* 8 imagens × 100% */
+            width: 1600%; /* 16 imagens × 100% */
             height: 100%;
-            animation: slide 30s infinite; /* Duração de 30s */
+            animation: slide 60s infinite; /* Duração de 30s */
             transition: transform 0.5s ease-in-out;
         }
         .carousel-item {
-            width: 12.5%; /* 100% ÷ 8 imagens */
+            width: 6.25%; /* 100% ÷ 16 imagens */
             height: 100%;
             position: relative; /* Necessário para o ::before */
             display: flex; /* Centraliza a imagem */
@@ -163,6 +163,14 @@
         .carousel-item-6::before { background-image: url('static/image6.jpeg'); }
         .carousel-item-7::before { background-image: url('static/image7.jpeg'); }
         .carousel-item-8::before { background-image: url('static/image8.jpeg'); }
+        .carousel-item-9::before { background-image: url('static/image9.jpeg'); }
+        .carousel-item-10::before { background-image: url('static/image10.jpeg'); }
+        .carousel-item-11::before { background-image: url('static/image11.jpeg'); }
+        .carousel-item-12::before { background-image: url('static/image12.jpeg'); }
+        .carousel-item-13::before { background-image: url('static/image13.jpeg'); }
+        .carousel-item-14::before { background-image: url('static/image14.jpeg'); }
+        .carousel-item-15::before { background-image: url('static/image15.jpeg'); }
+        .carousel-item-16::before { background-image: url('static/image16.jpeg'); }
         .carousel-item img {
             width: 100%;
             height: 100%;
@@ -170,14 +178,22 @@
             position: relative; /* Garante que a imagem fique acima do fundo */
         }
         @keyframes slide {
-            0%, 11.11% { transform: translateX(0); } /* Imagem 1 */
-            12.5%, 23.61% { transform: translateX(-12.5%); } /* Imagem 2 */
-            25%, 36.11% { transform: translateX(-25%); } /* Imagem 3 */
-            37.5%, 48.61% { transform: translateX(-37.5%); } /* Imagem 4 */
-            50%, 61.11% { transform: translateX(-50%); } /* Imagem 5 */
-            62.5%, 73.61% { transform: translateX(-62.5%); } /* Imagem 6 */
-            75%, 86.11% { transform: translateX(-75%); } /* Imagem 7 */
-            87.5%, 98.61% { transform: translateX(-87.5%); } /* Imagem 8 */
+            0%, 6.25% { transform: translateX(0); } /* Imagem 1 */
+            6.25%, 12.5% { transform: translateX(-6.25%); } /* Imagem 2 */
+            12.5%, 18.75% { transform: translateX(-12.5%); } /* Imagem 3 */
+            18.75%, 25% { transform: translateX(-18.75%); } /* Imagem 4 */
+            25%, 31.25% { transform: translateX(-25%); } /* Imagem 5 */
+            31.25%, 37.5% { transform: translateX(-31.25%); } /* Imagem 6 */
+            37.5%, 43.75% { transform: translateX(-37.5%); } /* Imagem 7 */
+            43.75%, 50% { transform: translateX(-43.75%); } /* Imagem 8 */
+            50%, 56.25% { transform: translateX(-50%); } /* Imagem 9 */
+            56.25%, 62.5% { transform: translateX(-56.25%); } /* Imagem 10 */
+            62.5%, 68.75% { transform: translateX(-62.5%); } /* Imagem 11 */
+            68.75%, 75% { transform: translateX(-68.75%); } /* Imagem 12 */
+            75%, 81.25% { transform: translateX(-75%); } /* Imagem 13 */
+            81.25%, 87.5% { transform: translateX(-81.25%); } /* Imagem 14 */
+            87.5%, 93.75% { transform: translateX(-87.5%); } /* Imagem 15 */
+            93.75%, 100% { transform: translateX(-93.75%); } /* Imagem 16 */
             100% { transform: translateX(0); } /* Volta à Imagem 1 */
         }
         .audio-player {
@@ -229,6 +245,27 @@
             color: white;
             border: none !important;
             outline: none !important;
+        }
+        .audio-selector {
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+            padding: 5px;
+            background: linear-gradient(180deg, #000000, rgb(46, 46, 220), gold);
+            color: white;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+        }
+        .audio-selector option {
+            background: #000000;
+            color: white;
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.2rem;
         }
         .counter {
             display: flex;
@@ -355,6 +392,10 @@
             audio {
                 max-width: calc(100% - 20px); /* Respeita margens laterais */
             }
+            .audio-selector {
+                max-width: calc(100% - 20px); /* Alinha com o audio */
+                font-size: 1rem; /* Menor em telas pequenas */
+            }
             .counter {
                 font-size: 1.2rem; /* Ajustado para legibilidade em telas menores */
                 min-width: 150px; /* Evita compressão excessiva */
@@ -436,18 +477,42 @@
                 <div class="carousel-item carousel-item-8">
                     <img src="static/image8.jpeg" alt="Imagem 8">
                 </div>
+                <div class="carousel-item carousel-item-9">
+                    <img src="static/image9.jpeg" alt="Imagem 9">
+                </div>
+                <div class="carousel-item carousel-item-10">
+                    <img src="static/image10.jpeg" alt="Imagem 10">
+                </div>
+                <div class="carousel-item carousel-item-11">
+                    <img src="static/image11.jpeg" alt="Imagem 11">
+                </div>
+                <div class="carousel-item carousel-item-12">
+                    <img src="static/image12.jpeg" alt="Imagem 12">
+                </div>
+                <div class="carousel-item carousel-item-13">
+                    <img src="static/image13.jpeg" alt="Imagem 13">
+                </div>
+                <div class="carousel-item carousel-item-14">
+                    <img src="static/image14.jpeg" alt="Imagem 14">
+                </div>
+                <div class="carousel-item carousel-item-15">
+                    <img src="static/image15.jpeg" alt="Imagem 15">
+                </div>
+                <div class="carousel-item carousel-item-16">
+                    <img src="static/image16.jpeg" alt="Imagem 16">
+                </div>
             </div>
         </div>
         <div class="audio-player">
-            <audio controls>
-                <source src="static/TimMaiaEuAmoVoce.mp3" type="audio/mp3">
+            <audio controls id="audio-player">
+                <source id="audio-source" src="static/TimMaiaEuAmoVoce.mp3" type="audio/mp3">
                 Seu navegador não suporta o elemento de áudio.
             </audio>
         </div>
     </div>
     <div class="container2">
         <div class="counter">
-            <span id="">Nosso tempo juntos!!</span>
+            <span id="title">Nosso tempo juntos!!</span>
             <span id="ano">Anos: 0</span>
             <span id="mes">Meses: 00</span>
             <span id="dia">Dias: 000</span>
@@ -467,6 +532,15 @@
             coverLeft.classList.toggle('open');
             coverRight.classList.toggle('open');
             button.classList.toggle('bottom-right');
+        }
+
+        // Função para mudar a música
+        function changeTrack(src) {
+            const audio = document.getElementById('audio-player');
+            const source = document.getElementById('audio-source');
+            source.src = src;
+            audio.load(); // Recarrega o player com a nova fonte
+            audio.play(); // Toca a nova música automaticamente
         }
 
         // Data inicial: 15/09/2023 00:00:00 -03:00
