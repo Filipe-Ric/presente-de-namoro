@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page com Carrossel e Áudio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #000000, #800080);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .carousel {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+            margin: 20px 10px; /* Margens simétricas */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .carousel-inner {
+            display: flex;
+            width: 800%; /* 8 imagens × 100% */
+            height: 100%;
+            animation: slide 30s infinite; /* Duração de 30s */
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
+            width: 12.5%; /* 100% ÷ 8 imagens */
+            height: 100%;
+            position: relative; /* Necessário para o ::before */
+        }
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px); /* Desfoque no fundo */
+            z-index: -1; /* Fundo atrás do <img> */
+        }
+        /* Classes específicas para cada imagem de fundo */
+        .carousel-item-1::before {
+            background-image: url('static/image1.jpeg');
+        }
+        .carousel-item-2::before {
+            background-image: url('static/image2.jpeg');
+        }
+        .carousel-item-3::before {
+            background-image: url('static/image3.jpeg');
+        }
+        .carousel-item-4::before {
+            background-image: url('static/image4.jpeg');
+        }
+        .carousel-item-5::before {
+            background-image: url('static/image5.jpeg');
+        }
+        .carousel-item-6::before {
+            background-image: url('static/image6.jpeg');
+        }
+        .carousel-item-7::before {
+            background-image: url('static/image7.jpeg');
+        }
+        .carousel-item-8::before {
+            background-image: url('static/image8.jpeg');
+        }
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Exibe a imagem inteira */
+            position: relative; /* Garante que a imagem fique acima do fundo */
+        }
+        @keyframes slide {
+            0%, 11.11% { transform: translateX(0); } /* Imagem 1 */
+            12.5%, 23.61% { transform: translateX(-12.5%); } /* Imagem 2 */
+            25%, 36.11% { transform: translateX(-25%); } /* Imagem 3 */
+            37.5%, 48.61% { transform: translateX(-37.5%); } /* Imagem 4 */
+            50%, 61.11% { transform: translateX(-50%); } /* Imagem 5 */
+            62.5%, 73.61% { transform: translateX(-62.5%); } /* Imagem 6 */
+            75%, 86.11% { transform: translateX(-75%); } /* Imagem 7 */
+            87.5%, 98.61% { transform: translateX(-87.5%); } /* Imagem 8 */
+            100% { transform: translateX(0); } /* Volta à Imagem 1 */
+        }
+        .audio-player {
+            margin: 20px 10px; /* Margens simétricas */
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            background: transparent;
+        }
+        audio {
+            width: 100%;
+            max-width: 400px;
+            background: linear-gradient(135deg, #ff69b4, #000000);
+            border: none !important;
+            outline: none !important;
+            border-radius: 5px;
+        }
+        audio::-webkit-media-controls-panel {
+            background: linear-gradient(135deg, #ff69b4, #000000);
+            border: none !important;
+            outline: none !important;
+            border-radius: 5px;
+        }
+        audio::-webkit-media-controls-enclosure {
+            background: linear-gradient(135deg, #ff69b4, #000000);
+            border: none !important;
+            outline: none !important;
+            border-radius: 5px;
+        }
+        audio::-webkit-media-controls {
+            border: none !important;
+            outline: none !important;
+        }
+        audio::-moz-media-controls-panel {
+            background: linear-gradient(135deg, #ff69b4, #000000);
+            border: none !important;
+            outline: none !important;
+        }
+        .typewriter {
+            margin: 20px auto 0; /* Espaçamento acima do texto */
+            max-width: calc(100% - 20px); /* Respeita margens laterais */
+            text-align: center;
+            display: block;
+
+        }
+        .typewriter-line {
+            font-size: 1.2rem;
+            color: #ffffff;
+            overflow: hidden;
+            white-space: nowrap;
+            display: block; /* Cada linha em uma nova linha */
+            opacity: 0; /* Invisível até a animação começar */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra estática preta */
+        }
+        .typewriter-line:nth-child(1) {
+            animation:
+                show 0.1s forwards,
+                typewriter 5s steps(74, end) forwards,
+                blink 0.75s 6 forwards,
+                gold 5s forwards;
+        }
+        .typewriter-line:nth-child(2) {
+            animation:
+                show 0.1s 5s forwards,
+                typewriter 5s steps(67, end) 5s forwards,
+                blink 0.75s 6 5s forwards,
+                gold 5s 5s forwards;
+        }
+        .typewriter-line:nth-child(3) {
+            animation:
+                show 0.1s 10s forwards,
+                typewriter 5s steps(71, end) 10s forwards,
+                blink 0.75s 6 10s forwards,
+                gold 5s 10s forwards;
+        }
+        .typewriter-line:nth-child(4) {
+            animation:
+                show 0.1s 15s forwards,
+                typewriter 5s steps(12, end) 15s forwards,
+                blink 0.75s 6 15s forwards,
+                gold 5s 15s forwards;
+        }
+        /* Animação para tornar a linha visível */
+        @keyframes show {
+            to { opacity: 1; }
+        }
+        /* Animação de escrita */
+        @keyframes typewriter {
+            from { width: 0; border-right: 2px solid #ffffff; }
+            to { width: 100%; border-right: none; }
+        }
+        /* Animação do cursor piscante */
+        @keyframes blink {
+            50% { border-right-color: transparent; }
+        }
+        /* Animação para efeito dourado com sombra dourada */
+        @keyframes gold {
+            0% { color: #FFD700; text-shadow: 2px 2px 4px #FFD700; } /* Dourado com sombra dourada */
+            100% { color: #ffffff; text-shadow:  0px 0px 4px white; } /* Branco sem sombra (usa a sombra estática) */
+        }
+        @media (max-width: 600px) {
+            .carousel {
+                height: 200px;
+                margin: 20px 10px; /* Margens simétricas em celulares */
+            }
+            .audio-player {
+                margin: 20px 10px; /* Margens simétricas em celulares */
+                padding: 0;
+            }
+            audio {
+                max-width: calc(100% - 20px); /* Respeita margens laterais */
+            }
+            .typewriter-line {
+                font-size: 1rem; /* Menor em celulares */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item carousel-item-1">
+                <img src="static/image1.jpeg" alt="Imagem 1">
+            </div>
+            <div class="carousel-item carousel-item-2">
+                <img src="static/image2.jpeg" alt="Imagem 2">
+            </div>
+            <div class="carousel-item carousel-item-3">
+                <img src="static/image3.jpeg" alt="Imagem 3">
+            </div>
+            <div class="carousel-item carousel-item-4">
+                <img src="static/image4.jpeg" alt="Imagem 4">
+            </div>
+            <div class="carousel-item carousel-item-5">
+                <img src="static/image5.jpeg" alt="Imagem 5">
+            </div>
+            <div class="carousel-item carousel-item-6">
+                <img src="static/image6.jpeg" alt="Imagem 6">
+            </div>
+            <div class="carousel-item carousel-item-7">
+                <img src="static/image7.jpeg" alt="Imagem 7">
+            </div>
+            <div class="carousel-item carousel-item-8">
+                <img src="static/image8.jpeg" alt="Imagem 8">
+            </div>
+        </div>
+    </div>
+    <div class="audio-player">
+        <audio controls>
+            <source src="static/TimMaiaEuAmoVoce.mp3" type="audio/mp3">
+            Seu navegador não suporta o elemento de áudio.
+        </audio>
+        <div class="typewriter">
+            <span class="typewriter-line">Sei que o nosso amor não cabe em um IP, mas prometo confessá-lo para sempre</span>
+            <span class="typewriter-line">Não te ofereço nada menos que tudo, e te peço apenas um amor eterno</span>
+            <span class="typewriter-line">Que o meu afeto nunca te baste, eu te amo...</span>
+        </div>
+    </div>
+</body>
+</html>
